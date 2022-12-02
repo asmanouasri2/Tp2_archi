@@ -4,78 +4,72 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 
-public class EtudiantService implements InterfaceEtudiantRepository {
-	 
-	public InterfaceEtudiantRepository IStudRep;
-	public InterfaceUniversityRepository IUnivRep; 
+
+public class EtudiantService {
 	
-	
-	public EtudiantService(InterfaceEtudiantRepository IStudRep, InterfaceUniversityRepository IUnivRep)
-	
+		private InterfaceEtudiantRepository StudRep;
+		private InterfaceUniversityRepository UnivRep;
+		private IJournal j;
+		
+		public void setEtudRep(InterfaceEtudiantRepository StudRep) {
+			this.StudRep = StudRep;
+		}
+		public void setUnivRep(InterfaceUniversityRepository UnivRep) {
+			this.UnivRep = UnivRep;
+		}
+		public void setJournal(IJournal j) {
+			this.j = j;
+		}
+		
+		public InterfaceEtudiantRepository getStudRep() {
+			return this.StudRep;
+		}
+		public InterfaceUniversityRepository getUnivRep() {
+			return this.UnivRep;
+		}
+		public IJournal getJournal() {
+			return this.j;
+		}
+		
+	public boolean inscription (int matricule, String nom, String prénom, String email,String pwd, int id_universite) throws SQLException	
 	{
-		IStudRep= IStudREP;
-		IUnivRep= IUnivREP;
 		
-	}
-	
-	
-	
-	boolean inscription (int matricule, String nom, String prenom, String email,String pwd, int id_universite) throws SQLException	
-	{
-	    Etudiant stud = new Etudiant(matricule, nom, prenom, email,pwd,id_universite);
-	   
-	    
-	    System.out.println("Log: debut de l'operation d'ajout de l'�tudiant avec matricule "+matricule);
-	    
-	    if(email == null || email.length() == 0)
-	    {
-	    	return false;
-	    }
-	    
-	    if (StudRep.Exists(matricule))
-	    {
-	        return false;
-	    }
-	    
-		if (StudRep.Exists(email))
-	    {
-	        return false;
-	    }
-		
-		
-		
-		 if (univ.getPack() == TypePackage.Standard)
-	     {
-	          stud.setNbLivreMensuel_Autorise(10);
-	     }
-	     else if (univ.getPack() == TypePackage.Premium)
-	     {
-	    	 stud.setNbLivreMensuel_Autorise(10*2);
-	     }                           
-	     
-		 StudRep.add(stud);
-		 System.out.println("Log: Fin de l'op�ration d'ajout de l'�tudiant avec matricule "+matricule);
+	    Etudiant stud = new Etudiant(matricule, nom, prénom, email,pwd,id_universite);
+	    Universite univ= UnivRep.GetById(id_universite, j);
+
+	    j.outPut_Msg("Log: début de l'opération d'ajout de l'étudiant avec matricule "+matricule);                           
+	    AbstractFactory AF = new ConcreteCreator();
+	    IPackage pack = AF.getPackage(univ.getPack());
+	    stud.setNbLivreMensuel_Autorise(pack.getNbrLivreAutorise());
+
+		 StudRep.add(stud, j);
+
+		 j.outPut_Msg("Log: Fin de l'opération d'ajout de l'étudiant avec matricule "+matricule);
 		 return true;
 	    
 		
 	}
 	
+	public void ajouterBonus() throws SQLException {
+		ArrayList<Etudiant> etudiants = StudRep.getEtudiants();
+		
+		for(Etudiant e : etudiants) {
+			Universite univ = UnivRep.GetById(e.getId_universite(), new ScreenJourn());
+			e.giveBonus(univ);
+		}
+	}
 	
 	
-
 public ArrayList<Etudiant> GetEtudiantParUniversitye()
 {
     //...
 	return new ArrayList<>(4);
 }
-
 public ArrayList<Etudiant> GetEtudiatparLivreEmprunte()
 {
     //...
 	return new ArrayList<>(4);
 	
 }
-
-
 	
 }
