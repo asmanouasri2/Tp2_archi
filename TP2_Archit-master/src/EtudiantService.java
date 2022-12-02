@@ -3,17 +3,29 @@ import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
-public class EtudiantService {
+
+public class EtudiantService implements InterfaceEtudiantRepository {
+	 
+	public InterfaceEtudiantRepository IStudRep;
+	public InterfaceUniversityRepository IUnivRep; 
+	
+	
+	public EtudiantService(InterfaceEtudiantRepository IStudRep, InterfaceUniversityRepository IUnivRep)
+	
+	{
+		IStudRep= IStudREP;
+		IUnivRep= IUnivREP;
+		
+	}
+	
 	
 	
 	boolean inscription (int matricule, String nom, String prenom, String email,String pwd, int id_universite) throws SQLException	
 	{
-		EtudiantRepository StudRep= new EtudiantRepository();
-	    UniversiteRepository UnivRep= new UniversiteRepository();
 	    Etudiant stud = new Etudiant(matricule, nom, prenom, email,pwd,id_universite);
-	    Universite univ=UnivRep.GetById(id_universite);
+	   
 	    
-	    System.out.println("Log: d�but de l'op�ration d'ajout de l'�tudiant avec matricule "+matricule);
+	    System.out.println("Log: debut de l'operation d'ajout de l'�tudiant avec matricule "+matricule);
 	    
 	    if(email == null || email.length() == 0)
 	    {
