@@ -31,24 +31,24 @@ public class EtudiantService {
 			return this.j;
 		}
 		
-	public boolean inscription (int matricule, String nom, String prénom, String email,String pwd, int id_universite) throws SQLException	
-	{
-		
-	    Etudiant stud = new Etudiant(matricule, nom, prénom, email,pwd,id_universite);
-	    Universite univ= UnivRep.GetById(id_universite, j);
+		public boolean inscription (int matricule, String nom, String prenom, String email,String pwd, int id_universite) throws SQLException	
+		{
+			
+		    Etudiant stud = new Etudiant(matricule, nom, prenom, email,pwd,id_universite);
+		    Universite univ= UnivRep.GetById(id_universite, j);
 
-	    j.outPut_Msg("Log: début de l'opération d'ajout de l'étudiant avec matricule "+matricule);                           
-	    AbstractFactory AF = new ConcreteCreator();
-	    IPackage pack = AF.getPackage(univ.getPack());
-	    stud.setNbLivreMensuel_Autorise(pack.getNbrLivreAutorise());
+		    j.outPut_Msg("Log: d�but de l'op�ration d'ajout de l'�tudiant avec matricule "+matricule);                           
+		    AbstractFactory AF = new ConcreteCreator();
+		    IPackage pack = AF.getPackage(univ.getPack());
+		    stud.setNbLivreMensuel_Autorise(pack.getNbrLivreAutorise());
 
-		 StudRep.add(stud, j);
+			 StudRep.add(stud, j);
 
-		 j.outPut_Msg("Log: Fin de l'opération d'ajout de l'étudiant avec matricule "+matricule);
-		 return true;
-	    
-		
-	}
+			 j.outPut_Msg("Log: Fin de l'op�ration d'ajout de l'�tudiant avec matricule "+matricule);
+			 return true;
+		    
+			
+		}
 	
 	public void ajouterBonus() throws SQLException {
 		ArrayList<Etudiant> etudiants = StudRep.getEtudiants();
