@@ -100,7 +100,14 @@ public class Etudiant {
 		public void setPwd(String pwd) {
 			this.pwd = pwd;
 		}
+            public void giveBonus(Universite univ) throws SQLException {
+			
 
+			AbstractFactory AF = new ConcreteCreator();
+		    IPackage pack = AF.getPackage(univ.getPack());
+			setNbLivreMensuel_Autorise(this.getNbLivreMensuel_Autorise() + pack.getBonus()) ;
+
+		}
 		
 		
 	    }
